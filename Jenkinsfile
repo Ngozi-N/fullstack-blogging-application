@@ -69,7 +69,7 @@ pipeline {
             steps {
                 script {
                 withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
-                    sh "docker build -t ngozin/blogging-application:latest ."
+                    sh "docker build -t <docker_username>/blogging-application:latest ."
                 }
                 }
             }
@@ -77,7 +77,7 @@ pipeline {
         
         stage('Trivy Image Scan') {
             steps {
-                sh "trivy image --format table -o image.html ngozin/blogging-application:latest"
+                sh "trivy image --format table -o image.html <docker_username>/blogging-application:latest"
             }
         }
         
@@ -85,7 +85,7 @@ pipeline {
             steps {
                 script {
                 withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
-                    sh "docker push ngozin/blogging-application:latest"
+                    sh "docker push <docker_username>/blogging-application:latest"
                 }
                 }
             }
@@ -134,7 +134,7 @@ pipeline {
             emailext (
                 subject: "${jobName} - Build ${buildNumber} - ${pipelineStatus.toUpperCase()}",
                 body: body,
-                to: 'nwadialongozi@gmail.com',
+                to: 'email@gmail.com',
                 from: 'jenkins@caddproject.com',
                 replyTo: 'jenkins@caddproject.com',
                 mimeType: 'text/html'
